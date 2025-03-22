@@ -24,15 +24,11 @@ RUN apt-get -y update && apt-get install -y \
     
 RUN pip3 install --no-cache-dir --upgrade pip 
 
-WORKDIR /home/TradeMarkIndexing
+WORKDIR /home/TradeMark
 
 COPY ./requirements.txt ./requirements.txt
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-COPY ./run_flask.py ./run_flask.py
-COPY ./qwenvlm.py ./qwenvlm.py
-COPY ./ocr.py ./ocr.py
-COPY ocr_describe.py ./ocr_describe.py
 
 
 
