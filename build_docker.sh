@@ -1,0 +1,1 @@
+docker build -t huangdezhao/trademark:latest . -f Dockerfile

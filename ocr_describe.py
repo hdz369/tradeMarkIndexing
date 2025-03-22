@@ -1,6 +1,7 @@
-from transformers import Qwen2VLForConditionalGeneration, AutoTokenizer, AutoProcessor
+from transformers import Qwen2VLForConditionalGeneration, AutoProcessor
 from qwen_vl_utils import process_vision_info
 import torch 
+import time
 
 ckpt_path = "./local_model_qwenvl"
 
@@ -62,12 +63,14 @@ def qwenvl(image):
     #             2. **Detect any English text** in the image and return it. If there is no English text, return `null`.
     #             3. Provide a **description of the image**, including any notable features or objects present.
     #             """
-    # prompt = """ Provide a concise description of the image, including any notable features or objects present. 
+    prompt = """ Provide a concise description of the image, including any notable features or objects present. 
     #             """
-    prompt = """ output all the texts in this image """
+    # prompt = """ extract the key informatoin in the json format """
+    # prompt = """extract the key informatoin in json format. and then describe this image """
 
     messages = [
         {
+            "role": "system", "content": "You are a  assistant that detects text in the image.",  # add system role
             "role": "user",
             "content": [
                 {
@@ -98,9 +101,9 @@ def qwenvl(image):
 
     # Inference: Generation of the output
 
-    start_time = time.time()
+    # start_time = time.time()
     generated_ids = model.generate(**inputs, max_new_tokens=128)
-    print(time.time() - start_time)   
+    # print(time.time() - start_time)   
 
     # start_time = time.time()
     # with torch.no_grad():
@@ -115,12 +118,17 @@ def qwenvl(image):
         generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
     )[0]
     # print(output_text)
+
+    
+
+
+
+
     return output_text.strip("<|im_end|>")
 
 
 if __name__ == "__main__":
     from PIL import Image
-    import time
     image = Image.open('dione.jpg')
     start_time = time.time()
     print(qwenvl(image))

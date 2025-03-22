@@ -3,7 +3,7 @@ import base64
 import io 
 import time
 from PIL import Image 
-from ocr_describe_process import qwenvl
+from ocr_describe import qwenvl
 from ocr import easyocr_langdetect
 
 # Flask constructor takes the nae of current module as argument
@@ -13,7 +13,7 @@ app = Flask(__name__)
 # health check
 @app.route('/ping')
 def healthy():
-    return "pong"
+    return "pong\n"
 
 # upload base64 image for process
 @app.route('/upload', methods=['POST'])  # Route for POST request
@@ -51,4 +51,4 @@ def upload():
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8080, debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=True)
