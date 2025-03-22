@@ -36,11 +36,14 @@ def upload():
         chinese_text, english_text = easyocr_langdetect(image)
         description = qwenvl(image)
 
+        chinese_text = chinese_text if chinese_text!="" else "null"
+        english_text = english_text if english_text!="" else "null"
 
-        result = {}
-        result["chineseCharacter"] = chinese_text if chinese_text!="" else "null"
-        result["wordsInMark"] = english_text if english_text!="" else "null"
-        result["descrOfDevice"] = description
+        result = {
+            "wordsInMark":english_text, 
+            "chineseCharacter": chinese_text,          
+            "descrOfDevice":description
+            }
         
         print(time.time() - start_time)
 

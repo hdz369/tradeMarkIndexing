@@ -14,18 +14,6 @@ def qwenvl(image):
         device = torch.device("cuda")
         device_map = 'auto'
 
-    # # default: Load the model on the available device(s)
-    # model = Qwen2VLForConditionalGeneration.from_pretrained(
-    #     "prithivMLmods/Qwen2-VL-OCR-2B-Instruct",
-    #     torch_dtype=torch.bfloat16,
-    #     device_map="auto",
-    # )
-    # # default processer
-    # processor = AutoProcessor.from_pretrained("prithivMLmods/Qwen2-VL-OCR-2B-Instruct")
-    # # Save model and tokenizer locally
-    # model.save_pretrained("./local_models")
-    # processor.save_pretrained("./local_models")
-
 
     # default: Load the model on the available device(s)
     model = Qwen2VLForConditionalGeneration.from_pretrained(
@@ -76,7 +64,6 @@ def qwenvl(image):
                 {
                     "type": "image",
                     "image": image,
-                    # "image": "dione.jpg",
                     "resized_height": 200,
                     "resized_width": 200,
                 },
