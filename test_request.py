@@ -7,13 +7,23 @@ def health_check():
 
     print(response)    
 
+def image_url_to_base64(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        encoded_image = base64.b64encode(response.content).decode('utf-8')
+        return encoded_image
+    else:
+        raise Exception(f"Failed to fetch image: {response.status_code}")
 
-def main(image_path):
-    url = "http://127.0.0.1:8080/upload"
+def image_path_to_base64(image_path):
     with open(image_path, 'rb') as image_file:
         # Read the image and encode it to base64
         encoded_image = base64.b64encode(image_file.read()).decode('utf-8')
+    return encoded_image
     
+def main(encoded_image):
+    url = "http://127.0.0.1:8080/invoke"
+
     headers={
         'User-Agent': 'python-requests/2.31.0',
         'Accept': '*/*',
@@ -29,6 +39,26 @@ def main(image_path):
 
     print(response.json())
 
+
+def retrieve_tradeMarks(lodgement_date):
+    url = "https://api.data.gov.sg/v1/technology/ipos/trademarks?lodgement_date="
+    response = requests.get(url+lodgement_date).json()
+    print(response.keys())
+    print("count", response['count'])
+    items = response['items']
+    for item in items:
+        markindex = item['markIndex']
+        # print(item['documents'][0].keys())
+        url = item['documents'][0]['url']
+
+        print(markindex)
+        print(url)
+        print(main(image_url_to_base64(url)))
+
+     
+
 if __name__ == "__main__":
-    health_check()
-    main('dione.jpg')
+    # health_check()
+    # main(image_path_to_base64('siogoodChinese.jpg'))
+    retrieve_tradeMarks("2018-11-23")
+

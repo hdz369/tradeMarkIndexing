@@ -5,6 +5,7 @@ import time
 from PIL import Image 
 from ocr_describe import qwenvl
 from ocr import easyocr_langdetect
+from collections import OrderedDict
 
 # Flask constructor takes the nae of current module as argument
 app = Flask(__name__)
@@ -16,8 +17,8 @@ def healthy():
     return "pong\n"
 
 # upload base64 image for process
-@app.route('/upload', methods=['POST'])  # Route for POST request
-def upload():
+@app.route('/invoke', methods=['POST'])  # Route for POST request
+def invoke():
     
     try:
         start_time = time.time()
@@ -34,16 +35,16 @@ def upload():
         image = Image.open(io.BytesIO(image_byte))
 
         chinese_text, english_text = easyocr_langdetect(image)
-        description = qwenvl(image)
+        description, output_text = qwenvl(image)
 
-        chinese_text = chinese_text if chinese_text!="" else "null"
-        english_text = english_text if english_text!="" else "null"
+        chinese_text = chinese_text if chinese_text!="" else 'null'
+        english_text = english_text if english_text!="" else 'null'
 
-        result = {
+        result = OrderedDict({
             "wordsInMark":english_text, 
             "chineseCharacter": chinese_text,          
             "descrOfDevice":description
-            }
+            })
         
         print(time.time() - start_time)
 

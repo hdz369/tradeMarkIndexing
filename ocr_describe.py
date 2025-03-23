@@ -51,8 +51,8 @@ def qwenvl(image):
     #             2. **Detect any English text** in the image and return it. If there is no English text, return `null`.
     #             3. Provide a **description of the image**, including any notable features or objects present.
     #             """
-    prompt = """ Provide a concise description of the image, including any notable features or objects present. 
-    #             """
+    # prompt = """ Provide a concise description of the image, including any notable features or objects present.  based on the description, extract the english text and chinese text if any.   """
+    prompt = """ Provide a concise description of the image, including any notable features or objects present."""
     # prompt = """ extract the key informatoin in the json format """
     # prompt = """extract the key informatoin in json format. and then describe this image """
 
@@ -101,17 +101,51 @@ def qwenvl(image):
     generated_ids_trimmed = [
         out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
     ]
+    description = processor.batch_decode(
+        generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
+    )[0].strip("<|im_end|>")
+    # print(output_text)
+    
+
+    ## extract Chinese and English words from description
+    prompt = f"Here is an description of an image: {description}. Extract the English and Chinese text from a description into json format with two properties: 'Chinese_text', 'English_text'. "
+    messages = [
+        {
+            "role": "user",
+            "content": [
+                {"type": "text", "text": prompt},
+            ],
+        }
+    ]
+
+    # Preparation for inference
+    text = processor.apply_chat_template(
+        messages, tokenize=False, add_generation_prompt=True
+    )
+    image_inputs, video_inputs = process_vision_info(messages)
+    inputs = processor(
+        text=[text],
+        images=image_inputs,
+        videos=video_inputs,
+        padding=True,
+        return_tensors="pt",
+    )
+    inputs = inputs.to(device)
+
+    # Inference: Generation of the output
+    generated_ids = model.generate(**inputs, max_new_tokens=128)
+
+    generated_ids_trimmed = [
+        out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+    ]
     output_text = processor.batch_decode(
         generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
     )[0]
-    # print(output_text)
 
-    
-
+    print(description, output_text)
 
 
-
-    return output_text.strip("<|im_end|>")
+    return description, output_text
 
 
 if __name__ == "__main__":
