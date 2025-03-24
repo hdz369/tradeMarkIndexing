@@ -5,5 +5,5 @@ export WORKSPACE=$HOME/tradeMarkIndexing
 
 docker_image="huangdezhao/trademark:latest"
 
-docker run -it -w $WORKSPACE -v $(PWD):$WORKSPACE -p 8080:8080 $docker_image     # for cpu usage
-# docker run -it --gpus all -w $WORKSPACE -v $(PWD):$WORKSPACE -p 8080:8080 $docker_image   # for gpu usage
+docker run -it -w $WORKSPACE -v $(pwd):$WORKSPACE -p 8080:8080 $docker_image     # for cpu usage
+# docker run -it --gpus all -w $WORKSPACE -v $(pwd):$WORKSPACE -p 8080:8080 $docker_image   # for gpu usage
