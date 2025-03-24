@@ -106,43 +106,44 @@ def qwenvl(image):
     )[0].strip("<|im_end|>")
     # print(output_text)
     
+    output_text = ""
+    extract_from_desecription = False   ## extract Chinese and English words from description
+    if extract_from_desecription:
+        prompt = f"Here is an description of an image: {description}. Extract the English and Chinese text from a description into json format with two properties: 'Chinese_text', 'English_text'. "
+        messages = [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                ],
+            }
+        ]
 
-    ## extract Chinese and English words from description
-    prompt = f"Here is an description of an image: {description}. Extract the English and Chinese text from a description into json format with two properties: 'Chinese_text', 'English_text'. "
-    messages = [
-        {
-            "role": "user",
-            "content": [
-                {"type": "text", "text": prompt},
-            ],
-        }
-    ]
+        # Preparation for inference
+        text = processor.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True
+        )
+        image_inputs, video_inputs = process_vision_info(messages)
+        inputs = processor(
+            text=[text],
+            images=image_inputs,
+            videos=video_inputs,
+            padding=True,
+            return_tensors="pt",
+        )
+        inputs = inputs.to(device)
 
-    # Preparation for inference
-    text = processor.apply_chat_template(
-        messages, tokenize=False, add_generation_prompt=True
-    )
-    image_inputs, video_inputs = process_vision_info(messages)
-    inputs = processor(
-        text=[text],
-        images=image_inputs,
-        videos=video_inputs,
-        padding=True,
-        return_tensors="pt",
-    )
-    inputs = inputs.to(device)
+        # Inference: Generation of the output
+        generated_ids = model.generate(**inputs, max_new_tokens=128)
 
-    # Inference: Generation of the output
-    generated_ids = model.generate(**inputs, max_new_tokens=128)
+        generated_ids_trimmed = [
+            out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+        ]
+        output_text = processor.batch_decode(
+            generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
+        )[0]
 
-    generated_ids_trimmed = [
-        out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
-    ]
-    output_text = processor.batch_decode(
-        generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
-    )[0]
-
-    print(description, output_text)
+        print(description, output_text)
 
 
     return description, output_text

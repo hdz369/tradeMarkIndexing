@@ -1,4 +1,4 @@
-local_model_qwenvl/** 
+local_model_qwenvl/*.safetensors 
 
 # local_model_easyocr/**
 local_model_blip/** 

@@ -31,4 +31,4 @@ def download_save_ckpt():
 if __name__ == "__main__":
     if not os.path.exists(ckpt_path):
         os.makedirs(ckpt_path)  
-        download_save_ckpt()
+    download_save_ckpt()
