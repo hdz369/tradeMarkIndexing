@@ -11,21 +11,21 @@ The goal of this solution is to depoly an trade mark indexing inference system, 
 ```
 
 ## Design decisions and rationales 
-During the solution development, two design approaches were tried with memory (16G) and time (30s) taken into consideration.
-1. **Generate target json output directly using VLM (vision language model)**
+During the solution development, two design approaches were considered, taking into account memory (16G) and time (30s) constraints.
+1. **Generate target json output directly using vision language model (VLM )**
 2. **Decouple the task into OCR for text detection and Image Description (Captioning) for description**
 
-In the end, after many trials, a combination of approaches 1 and 2 are used as the final solution (OCR+VLM)
+After extensive trials, a combination of approaches 1 and 2 was chosen as the final solution (OCR+VLM)
 
 
 ## 1. Generate target json output directly using VLM (vision language model)
 ### Pros
-- VLM, as a multimode model, is able to understand image and NLP. Thus it has the potential to fullfill this task with one model only
-- Multimode model is the future trend of AI development and will replace combinations of single-mode models in multi-modality scenarios
+- VLM, as a multimode model, understands both image and NLP making it theoretically possible to fullfill this task with a single model
+- Multimode model represents the future trend of AI development and may replace combinations of single-mode models in multi-modality scenarios
 
 ### Cons
-- Currently, it is still quite chanllenging to precisely control how the model should generate output. Heavy trial on prompting is needed
-- In the current state of AI model, larger size (number of parameters) usually leads to more powerful performance. In this case,the memory and time limits constaints the size of VLM, thus reduce its capability.
+- It remains chanllenging to precisely control how the model generates output, requiring extensive prompt engineering.
+- Larger AI models generally perform better, but memory and time constaints limit the feasible size of VLM, reducing its capability.
 
 
 ## 2.Decouple the task: OCR for text detection and Image Description (Captioning) for description
@@ -36,7 +36,7 @@ In the end, after many trials, a combination of approaches 1 and 2 are used as t
 
 ### Cons
 - By using multiple models instead of one VLM, we need to be more cautious about the memory usage and time consumption (speed)
-- Surprisingly, the performance of current SOTA OCR models and image captioning models can not compete with that of a VLM
+- Surprisingly, the current SOTA OCR models and image captioning models underperform compared to VLM in this case
 - A suitable image captioning model was not found to accomplish the description task.
 
 ## Final Solution: OCR+VLM
