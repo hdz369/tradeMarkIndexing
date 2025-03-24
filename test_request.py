@@ -4,7 +4,6 @@ import base64
 def health_check():
     url = "http://127.0.0.1:8080/ping"
     response = requests.get(url)
-
     print(response)    
 
 def image_url_to_base64(url):
