@@ -6,7 +6,7 @@ import time
 ckpt_path = "./local_model_qwenvl"
 
 
-def qwenvl(image):
+def load_model():
     # Check if GPU is available
     device = torch.device("cpu")
     device_map = 'cpu'
@@ -14,7 +14,7 @@ def qwenvl(image):
         device = torch.device("cuda")
         device_map = 'auto'
 
-
+    print("device", device)
     # default: Load the model on the available device(s)
     model = Qwen2VLForConditionalGeneration.from_pretrained(
         ckpt_path,
@@ -23,9 +23,36 @@ def qwenvl(image):
     )
     # default processer
     processor = AutoProcessor.from_pretrained(ckpt_path)
-
-
     model.to(device)
+
+    return processor, model    
+
+
+
+
+def qwenvl(image, processor=None, model=None ):
+    # Check if GPU is available
+    device = torch.device("cpu")
+    device_map = 'cpu'
+    if torch.cuda.is_available(): 
+        device = torch.device("cuda")
+        device_map = 'auto'
+
+    # print("device", device)
+    if model is None:
+        # default: Load the model on the available device(s)
+        model = Qwen2VLForConditionalGeneration.from_pretrained(
+            ckpt_path,
+            torch_dtype=torch.bfloat16,
+            device_map=device_map,
+        )
+        model.to(device)  
+     #  
+
+    if processor is None:
+        # default processer
+        processor = AutoProcessor.from_pretrained(ckpt_path)
+
 
 
     # The default range for the number of visual tokens per image in the model is 4-16384. You can set min_pixels and max_pixels according to your needs, such as a token count range of 256-1280, to balance speed and memory usage.

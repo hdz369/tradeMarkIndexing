@@ -3,13 +3,14 @@ import base64
 import io 
 import time
 from PIL import Image 
-from ocr_describe import qwenvl
+from ocr_describe import load_model, qwenvl
 from ocr import easyocr_langdetect
 from collections import OrderedDict
 
 # Flask constructor takes the nae of current module as argument
 app = Flask(__name__)
 
+vlprovessor, vlmodel = load_model()
 
 # health check
 @app.route('/ping')
@@ -35,7 +36,7 @@ def invoke():
         image = Image.open(io.BytesIO(image_byte))
 
         chinese_text, english_text = easyocr_langdetect(image)
-        description, output_text = qwenvl(image)
+        description, output_text = qwenvl(image, processor=vlprovessor, model=vlmodel)
 
         chinese_text = chinese_text if chinese_text!="" else 'null'
         english_text = english_text if english_text!="" else 'null'
