@@ -87,7 +87,7 @@ cd tradeMarkIndexing
 
 ### Download QwenVL model (optional)
 
-Download the file 'model.safetensors' from Hugging Face:[Qwen2-VL-OCR-2B-Instruct] (https://huggingface.co/prithivMLmods/Qwen2-VL-OCR-2B-Instruct/resolve/main) and save it in the following directory 
+Download the file 'model.safetensors' from Hugging Face:[Qwen2-VL-OCR-2B-Instruct] (https://huggingface.co/prithivMLmods/Qwen2-VL-OCR-2B-Instruct/resolve/main) and save it in directory `local_model_qwenvl`
 
 ```bash
 cd local_model_qwenvl
