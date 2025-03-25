@@ -39,11 +39,11 @@ After extensive trials, a combination of approaches 1 and 2 was chosen as the fi
 - Surprisingly, the current SOTA OCR models and image captioning models underperform compared to VLM in this case
 - A suitable image captioning model was not found to accomplish the description task.
 
-## Final Solution: OCR+VLM
-### Other trials
+## Other trials
 Since the trade mark image description generated from qwen2vl were promising, a VLM+VLM approach was attempted: first generating a description, then extracting Chinese and English text from it. However, this approach also failed due to lack of control over the final output.
 
-### Final solution Implementation Details
+## Final Solution: OCR+VLM
+
 **Libraries & Tools**
 - **Flask** – Http API service 
 - **EasyOCR** – Extracting text from trade mark images
@@ -51,6 +51,9 @@ Since the trade mark image description generated from qwen2vl were promising, a 
 - **PyTorch** – Implementing deep learning models.
 - **Hugging Face Transformers** – Using pre-trained captioning models.
 
+other OCR models like trocr was also tested but was abandon due to performance inferiority. 
+
+Experiments on image size resizing has been done to balance between performance and time&memory constraints. 
 
 ## Conclusion
 By combining OCR text detection and VLM description, this solution enables recognition of textual content and meaningful descriptions of trade mark images, making it useful for automated and consistent indexing. However, due to time and resource constraints, this solution still has much room for further improvement.
@@ -60,7 +63,7 @@ By combining OCR text detection and VLM description, this solution enables recog
 - Evaluate different OCR models for text extraction. If necessary, finetune a model with current domain-specific data
 - Analyze edge cases and failure scenarios related to text formatting and refine formatting rules
 ### Long term
-- Further explore VLM model for better control, faster processing speed and lower RAM consumption
+- Further explore VLM model for better control (maybe some supervised finetuning for better instruction following), faster processing speed  and lower RAM consumption (model quantization, dedicated inference framework)
 
 
 # Installation and Run
