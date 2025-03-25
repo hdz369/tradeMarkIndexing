@@ -1,5 +1,5 @@
 from transformers import TrOCRProcessor, VisionEncoderDecoderModel
-import time
+# import time
 import re 
 import easyocr 
 from langdetect import detect

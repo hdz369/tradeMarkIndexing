@@ -84,14 +84,14 @@ cd tradeMarkIndexing
 
 ### Download QwenVL model (optional)
 
-manually download the file 'model.safetensors' from Hugging Face:[Qwen2-VL-OCR-2B-Instruct] (https://huggingface.co/prithivMLmods/Qwen2-VL-OCR-2B-Instruct/tree/main) 
+To avoid the hassle of unnecessary environment setup, you can manually download the file 'model.safetensors' from Hugging Face:[Qwen2-VL-OCR-2B-Instruct] (https://huggingface.co/prithivMLmods/Qwen2-VL-OCR-2B-Instruct/tree/main) 
 Save it in the following directory 
 
 ```bash
 tradeMarkIndexing/local_model_qwenvl
 ```
 
-If this step is skipped, you will need to download [Qwen2-VL-OCR-2B-Instruct] model after entering the docker.
+Alternatively, you can bypass this step and directly download the [Qwen2-VL-OCR-2B-Instruct] model within a Docker container (where environment is ready) by running the script `download_qwenvl_ckpt.py`.
 
 ### Build from Dockerfile
 

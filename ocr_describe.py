@@ -1,7 +1,7 @@
 from transformers import Qwen2VLForConditionalGeneration, AutoProcessor
 from qwen_vl_utils import process_vision_info
 import torch 
-import time
+# import time
 
 ckpt_path = "./local_model_qwenvl"
 
@@ -179,7 +179,7 @@ def qwenvl(image, processor=None, model=None ):
 if __name__ == "__main__":
     from PIL import Image
     image = Image.open('dione.jpg')
-    start_time = time.time()
+    # start_time = time.time()
     print(qwenvl(image))
-    print(time.time() - start_time)
+    # print(time.time() - start_time)
 
